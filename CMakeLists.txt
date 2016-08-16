@@ -2,11 +2,19 @@ cmake_minimum_required(VERSION 3.5)
 project(Engine)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(SOURCE_FILES src/main.cpp src/graphics/window.cpp src/graphics/window.h)
 
-set(SOURCE_FILES src/main.cpp)
-set(LINK_FILE ${PROJECT_SOURCE_DIR}/deps/lib/libGLEW.so)
-set(INCLUDE_DIR deps/include)
-set(LIB_DIR deps/lib)
+add_executable(Engine ${SOURCE_FILES})
+
+# Find and link GLEW
+set(GLEW_LINK ${PROJECT_SOURCE_DIR}/deps/lib/libGLEW.a)
+target_link_libraries(Engine ${GLEW_LINK})
+
+# Find and link OpenGL
+find_package(OpenGL REQUIRED)
+target_link_libraries(Engine ${OPENGL_LIBRARIES})
+
+set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/deps/include)
 
 # Set GLFW variables to not build anything but GLFW
 set(GLFW_BUILD_EXAMPLES OFF)
@@ -21,8 +29,4 @@ include_directories(${GLFW_DIR}/include)
 # Include anything we need
 include_directories(${INCLUDE_DIR})
 
-# Link anything we need
-link_directories(${LIB_DIR})
-
-add_executable(Engine ${SOURCE_FILES})
-target_link_libraries(Engine ${LINK_FILE} glfw ${GLFW_LBRARIES})
+target_link_libraries(Engine ${GLEW_LINK} glfw ${GLFW_LBRARIES})
