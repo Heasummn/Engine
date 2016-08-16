@@ -33,7 +33,7 @@ bool Window::init()
         return false;
     }
     glfwMakeContextCurrent(_window);
-    glfwSetWindowPosCallback(_window, resizeHandler);
+    glfwSetWindowSizeCallback(_window, resizeHandler);
 
     GLenum err = glewInit();
     if (GLEW_OK != err)
